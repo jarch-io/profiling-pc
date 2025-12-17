@@ -17,7 +17,7 @@
     },
     "editable": true,
     "fiscalYearStartMonth": 0,
-    "graphTooltip": 0,
+    "graphTooltip": 2,
     "id": null,
     "links": [],
     "liveNow": false,
@@ -1054,15 +1054,17 @@
             "options": {
                 "legend": {
                     "calcs": [
-                        "mean"
+                        "mean",
+                        "lastNotNull",
+                        "max"
                     ],
                     "displayMode": "table",
-                    "placement": "bottom",
+                    "placement": "right",
                     "showLegend": true
                 },
                 "tooltip": {
                     "mode": "multi",
-                    "sort": "none"
+                    "sort": "desc"
                 }
             },
             "targets": [
@@ -1071,12 +1073,13 @@
                         "type": "prometheus",
                         "uid": "prometheus"
                     },
-                    "expr": "avg by (mode) (irate(node_cpu_seconds_total[5m]))",
+                    "expr": "avg by (mode) (irate(node_cpu_seconds_total{mode!=\"idle\"}[5m]))",
                     "refId": "A",
                     "legendFormat": "{{mode}}"
                 }
             ],
-            "title": "CPU by Mode",
+            "title": "CPU by Mode (Active)",
+            "description": "CPU time distribution by mode:\n• user: Application processes\n• system: Kernel operations\n• iowait: Waiting for I/O (disk/network)\n• irq/softirq: Hardware/software interrupts\n• steal: Hypervisor overhead (WSL)\n• nice: Low-priority processes",
             "type": "timeseries"
         },
         {
