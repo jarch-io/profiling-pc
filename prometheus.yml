@@ -1,0 +1,30 @@
+global:
+  scrape_interval: 15s # Frecuencia de recolección
+
+scrape_configs:
+  # ----------------------------------------------------
+  # TAREA 1: MONITOREO DEL SISTEMA OPERATIVO HOST (W10)
+  # ----------------------------------------------------
+  #- job_name: 'windows_host'
+    # Windows Exporter corriendo en el host de Windows.
+    # Necesitas la IP del Host, que es accesible desde WSL
+    # generalmente a través de la IP de la puerta de enlace predeterminada.
+    # Si Prometheus está en Docker en WSL, 
+    # usa la IP del host de Windows o el nombre 'host.docker.internal'.
+   # static_configs:
+    #  - targets: ['host.docker.internal:9182'] 
+     #   labels:
+          # Etiqueta para diferenciar en Grafana
+      #    os_type: 'windows_10' 
+
+  # ----------------------------------------------------
+  # TAREA 2: MONITOREO DEL ENTORNO LINUX (WSL)
+  # ----------------------------------------------------
+  - job_name: 'wsl_linux'
+    # Node Exporter corriendo en el mismo entorno WSL (o en un contenedor en la misma red Docker).
+    static_configs:
+      # Si está en Docker, usa el nombre del servicio. Si está directamente en WSL, usa 'localhost'.
+      - targets: ['172.28.166.51:9100'] 
+        labels:
+          # Etiqueta para diferenciar en Grafana
+          os_type: 'wsl_linux'
