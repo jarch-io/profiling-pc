@@ -418,7 +418,7 @@
                             }
                         ]
                     },
-                    "unit": "percent"
+                    "unit": "bytes"
                 },
                 "overrides": []
             },
@@ -433,7 +433,8 @@
                 "legend": {
                     "calcs": [
                         "mean",
-                        "lastNotNull"
+                        "lastNotNull",
+                        "max"
                     ],
                     "displayMode": "table",
                     "placement": "bottom",
@@ -450,13 +451,129 @@
                         "type": "prometheus",
                         "uid": "prometheus"
                     },
-                    "expr": "(node_filesystem_size_bytes{fstype!=\"tmpfs\"} - node_filesystem_free_bytes{fstype!=\"tmpfs\"}) / node_filesystem_size_bytes{fstype!=\"tmpfs\"} * 100",
+                    "expr": "node_filesystem_size_bytes{fstype!=\"tmpfs\"} - node_filesystem_free_bytes{fstype!=\"tmpfs\"}",
                     "refId": "A",
-                    "legendFormat": "{{mountpoint}}"
+                    "legendFormat": "{{mountpoint}} - Used"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "prometheus"
+                    },
+                    "expr": "node_filesystem_size_bytes{fstype!=\"tmpfs\"}",
+                    "refId": "B",
+                    "legendFormat": "{{mountpoint}} - Total"
                 }
             ],
-            "title": "Disk Usage %",
+            "title": "Disk Usage Capacity",
             "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "hideFrom": {
+                            "tooltip": false,
+                            "viz": false,
+                            "legend": false
+                        }
+                    },
+                    "mappings": [],
+                    "unit": "bytes"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byRegexp",
+                            "options": "/.*Used/"
+                        },
+                        "properties": [
+                            {
+                                "id": "color",
+                                "value": {
+                                    "mode": "fixed",
+                                    "fixedColor": "red"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byRegexp",
+                            "options": "/.*Free/"
+                        },
+                        "properties": [
+                            {
+                                "id": "color",
+                                "value": {
+                                    "mode": "fixed",
+                                    "fixedColor": "green"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 12,
+                "x": 12,
+                "y": 16
+            },
+            "id": 14,
+            "options": {
+                "displayLabels": [],
+                "legend": {
+                    "displayMode": "table",
+                    "placement": "right",
+                    "showLegend": true,
+                    "values": [
+                        "value"
+                    ]
+                },
+                "pieType": "donut",
+                "reduceOptions": {
+                    "values": false,
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": ""
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "9.0.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "prometheus"
+                    },
+                    "expr": "sum(node_filesystem_size_bytes{fstype!=\"tmpfs\"} - node_filesystem_free_bytes{fstype!=\"tmpfs\"})",
+                    "refId": "A",
+                    "legendFormat": "Used"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "prometheus"
+                    },
+                    "expr": "sum(node_filesystem_free_bytes{fstype!=\"tmpfs\"})",
+                    "refId": "B",
+                    "legendFormat": "Free"
+                }
+            ],
+            "title": "Total Disk Space",
+            "type": "piechart"
         },
         {
             "datasource": {
