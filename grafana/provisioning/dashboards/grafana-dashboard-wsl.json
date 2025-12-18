@@ -744,7 +744,7 @@
                         "type": "prometheus",
                         "uid": "prometheus"
                     },
-                    "expr": "irate(node_disk_reads_completed_total[1m])",
+                    "expr": "irate(node_disk_reads_completed_total[1m]) > 0",
                     "refId": "A",
                     "legendFormat": "Read - {{device}}"
                 },
@@ -753,7 +753,7 @@
                         "type": "prometheus",
                         "uid": "prometheus"
                     },
-                    "expr": "irate(node_disk_writes_completed_total[1m])",
+                    "expr": "irate(node_disk_writes_completed_total[1m]) > 0",
                     "refId": "B",
                     "legendFormat": "Write - {{device}}"
                 }
@@ -869,7 +869,7 @@
                         "type": "prometheus",
                         "uid": "prometheus"
                     },
-                    "expr": "irate(node_network_receive_bytes_total{device!=\"lo\"}[1m])",
+                    "expr": "irate(node_network_receive_bytes_total{device!=\"lo\"}[1m]) > 0",
                     "refId": "A",
                     "legendFormat": "Receive - {{device}}"
                 },
@@ -878,7 +878,7 @@
                         "type": "prometheus",
                         "uid": "prometheus"
                     },
-                    "expr": "irate(node_network_transmit_bytes_total{device!=\"lo\"}[1m])",
+                    "expr": "irate(node_network_transmit_bytes_total{device!=\"lo\"}[1m]) > 0",
                     "refId": "B",
                     "legendFormat": "Transmit - {{device}}"
                 }
@@ -1053,7 +1053,7 @@
                         "type": "prometheus",
                         "uid": "prometheus"
                     },
-                    "expr": "node_network_receive_bytes_total",
+                    "expr": "node_network_receive_bytes_total > 0",
                     "refId": "A",
                     "legendFormat": "Received - {{device}}"
                 },
@@ -1062,7 +1062,7 @@
                         "type": "prometheus",
                         "uid": "prometheus"
                     },
-                    "expr": "node_network_transmit_bytes_total",
+                    "expr": "node_network_transmit_bytes_total > 0",
                     "refId": "B",
                     "legendFormat": "Sent - {{device}}"
                 }
