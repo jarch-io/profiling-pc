@@ -438,7 +438,7 @@
                 },
                 "tooltip": {
                     "mode": "multi",
-                    "sort": "none"
+                    "sort": "desc"
                 }
             },
             "targets": [
@@ -447,7 +447,7 @@
                         "type": "prometheus",
                         "uid": "prometheus"
                     },
-                    "expr": "node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes",
+                    "expr": "node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes - node_memory_Buffers_bytes - node_memory_Cached_bytes",
                     "refId": "A",
                     "legendFormat": "Used"
                 },

@@ -411,7 +411,7 @@
                 },
                 "tooltip": {
                     "mode": "multi",
-                    "sort": "none"
+                    "sort": "desc"
                 }
             },
             "targets": [
@@ -420,7 +420,7 @@
                         "type": "prometheus",
                         "uid": "prometheus"
                     },
-                    "expr": "windows_cs_physical_memory_bytes - windows_os_visible_memory_bytes",
+                    "expr": "windows_memory_physical_total_bytes - windows_memory_available_bytes - windows_memory_cache_bytes - windows_memory_standby_cache_normal_priority_bytes",
                     "refId": "A",
                     "legendFormat": "Used"
                 },
@@ -429,17 +429,26 @@
                         "type": "prometheus",
                         "uid": "prometheus"
                     },
-                    "expr": "windows_memory_cache_bytes",
+                    "expr": "windows_memory_standby_cache_normal_priority_bytes",
                     "refId": "B",
-                    "legendFormat": "Cache"
+                    "legendFormat": "Buffers"
                 },
                 {
                     "datasource": {
                         "type": "prometheus",
                         "uid": "prometheus"
                     },
-                    "expr": "windows_os_visible_memory_bytes",
+                    "expr": "windows_memory_cache_bytes",
                     "refId": "C",
+                    "legendFormat": "Cached"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "prometheus"
+                    },
+                    "expr": "windows_memory_available_bytes",
+                    "refId": "D",
                     "legendFormat": "Available"
                 }
             ],
