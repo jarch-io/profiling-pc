@@ -42,6 +42,86 @@
             },
             "fieldConfig": {
                 "defaults": {
+                    "custom": {
+                        "hideFrom": {
+                            "tooltip": false,
+                            "viz": false,
+                            "legend": false
+                        },
+                        "scaleDistribution": {
+                            "type": "linear"
+                        }
+                    },
+                    "unit": "percent"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 8,
+                "x": 0,
+                "y": 1
+            },
+            "id": 1,
+            "options": {
+                "calculate": false,
+                "cellGap": 2,
+                "cellValues": {
+                    "decimals": 0
+                },
+                "color": {
+                    "exponent": 0.5,
+                    "fill": "dark-orange",
+                    "mode": "scheme",
+                    "reverse": false,
+                    "scale": "exponential",
+                    "scheme": "Spectral",
+                    "steps": 128
+                },
+                "exemplars": {
+                    "color": "rgba(255,0,255,0.7)"
+                },
+                "filterValues": {
+                    "le": 1e-9
+                },
+                "legend": {
+                    "show": true
+                },
+                "rowsFrame": {
+                    "layout": "auto"
+                },
+                "tooltip": {
+                    "show": true,
+                    "yHistogram": false
+                },
+                "yAxis": {
+                    "axisPlacement": "left",
+                    "reverse": false,
+                    "unit": "short"
+                }
+            },
+            "pluginVersion": "9.0.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "prometheus"
+                    },
+                    "expr": "100 - (avg by (core) (rate(windows_cpu_time_total{mode=\"idle\"}[1m]) * 100))",
+                    "refId": "A",
+                    "legendFormat": "{{core}}"
+                }
+            ],
+            "title": "CPU Cores Usage Heatmap",
+            "type": "heatmap"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "fieldConfig": {
+                "defaults": {
                     "color": {
                         "mode": "palette-classic"
                     },
@@ -93,8 +173,8 @@
             },
             "gridPos": {
                 "h": 8,
-                "w": 12,
-                "x": 0,
+                "w": 8,
+                "x": 8,
                 "y": 1
             },
             "id": 2,
@@ -184,8 +264,8 @@
             },
             "gridPos": {
                 "h": 8,
-                "w": 12,
-                "x": 12,
+                "w": 8,
+                "x": 16,
                 "y": 1
             },
             "id": 10,
@@ -870,12 +950,88 @@
             "type": "timeseries"
         },
         {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "Total accumulated network data sent and received per network interface",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "yellow",
+                                "value": 1073741824
+                            },
+                            {
+                                "color": "red",
+                                "value": 10737418240
+                            }
+                        ]
+                    },
+                    "unit": "bytes"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 24,
+                "x": 0,
+                "y": 43
+            },
+            "id": 14,
+            "options": {
+                "orientation": "auto",
+                "reduceOptions": {
+                    "values": false,
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": ""
+                },
+                "showThresholdLabels": false,
+                "showThresholdMarkers": true
+            },
+            "pluginVersion": "9.0.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "prometheus"
+                    },
+                    "expr": "windows_net_bytes_received_total",
+                    "refId": "A",
+                    "legendFormat": "Received - {{nic}}"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "prometheus"
+                    },
+                    "expr": "windows_net_bytes_sent_total",
+                    "refId": "B",
+                    "legendFormat": "Sent - {{nic}}"
+                }
+            ],
+            "title": "Network Data Total (Accumulated)",
+            "type": "gauge"
+        },
+        {
             "collapsed": false,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 43
+                "y": 51
             },
             "id": 104,
             "panels": [],
@@ -941,7 +1097,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 44
+                "y": 52
             },
             "id": 7,
             "options": {
@@ -1048,7 +1204,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 44
+                "y": 52
             },
             "id": 9,
             "options": {
@@ -1138,7 +1294,7 @@
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 51
+                "y": 59
             },
             "id": 13,
             "options": {

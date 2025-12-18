@@ -995,12 +995,88 @@
             "type": "timeseries"
         },
         {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "Total accumulated network data sent and received per network interface",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "yellow",
+                                "value": 1073741824
+                            },
+                            {
+                                "color": "red",
+                                "value": 10737418240
+                            }
+                        ]
+                    },
+                    "unit": "bytes"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 24,
+                "x": 0,
+                "y": 57
+            },
+            "id": 14,
+            "options": {
+                "orientation": "auto",
+                "reduceOptions": {
+                    "values": false,
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": ""
+                },
+                "showThresholdLabels": false,
+                "showThresholdMarkers": true
+            },
+            "pluginVersion": "9.0.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "prometheus"
+                    },
+                    "expr": "node_network_receive_bytes_total",
+                    "refId": "A",
+                    "legendFormat": "Received - {{device}}"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "prometheus"
+                    },
+                    "expr": "node_network_transmit_bytes_total",
+                    "refId": "B",
+                    "legendFormat": "Sent - {{device}}"
+                }
+            ],
+            "title": "Network Data Total (Accumulated)",
+            "type": "gauge"
+        },
+        {
             "collapsed": false,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 57
+                "y": 65
             },
             "id": 104,
             "panels": [],
@@ -1066,7 +1142,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 58
+                "y": 66
             },
             "id": 7,
             "options": {
@@ -1209,7 +1285,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 58
+                "y": 66
             },
             "id": 9,
             "options": {
@@ -1317,7 +1393,7 @@
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 65
+                "y": 73
             },
             "id": 13,
             "options": {
