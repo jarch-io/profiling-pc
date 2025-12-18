@@ -502,7 +502,7 @@
                         "spanNulls": false,
                         "stacking": {
                             "group": "A",
-                            "mode": "none"
+                            "mode": "normal"
                         },
                         "thresholdsStyle": {
                             "mode": "off"
@@ -541,7 +541,7 @@
                 },
                 "tooltip": {
                     "mode": "multi",
-                    "sort": "none"
+                    "sort": "desc"
                 }
             },
             "targets": [
