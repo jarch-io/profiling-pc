@@ -1,14 +1,17 @@
-# Sistema de Monitoreo WSL con Prometheus y Grafana
+# Sistema de Monitoreo Multi-Sistema con Prometheus y Grafana
 
-Sistema de monitoreo completo para WSL usando Prometheus, Node Exporter y Grafana con dashboards pre-configurados.
+Sistema de monitoreo completo para WSL y Windows 10 usando Prometheus, Node Exporter/Windows Exporter y Grafana con dashboards pre-configurados.
 
 ## 🏗️ Arquitectura
 
 ```
 ┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
-│  WSL Linux      │────▶│   Prometheus     │────▶│    Grafana      │
-│  Node Exporter  │     │   (Scraping)     │     │  (Dashboards)   │
-│  :9100          │     │   :9090          │     │   :3000         │
+│  WSL Linux      │────▶│                  │     │                 │
+│  Node Exporter  │     │   Prometheus     │────▶│    Grafana      │
+│  :9100          │     │   (Scraping)     │     │  (Dashboards)   │
+│                 │     │   :9090          │     │   :3000         │
+│  Windows 10     │────▶│                  │     │                 │
+│  :9182  │     │                  │     │                 │
 └─────────────────┘     └──────────────────┘     └─────────────────┘
 ```
 
@@ -29,6 +32,11 @@ Sistema de monitoreo completo para WSL usando Prometheus, Node Exporter y Grafan
 - Puerto: `9100`
 - Configuración optimizada: `node-exporter-wsl.conf`
 - Métricas optimizadas para WSL
+
+### 4. **Windows Exporter** (Windows 10)
+- Puerto: `9182`
+- Endpoint: `http://host.docker.internal:9182`
+- Métricas específicas de Windows con prefijo `windows_`
 
 ## 🚀 Inicio Rápido
 
@@ -52,15 +60,21 @@ docker-compose ps
 - **Grafana**: http://localhost:3000
   - Usuario: `admin`
   - Contraseña: `admin`
-  - Dashboard: "WSL System Monitoring Dashboard" (cargado automáticamente)
+  - Dashboards disponibles:
+    - "WSL System Monitoring Dashboard" (para WSL/Linux)
+    - "Windows 10 System Monitoring Dashboard" (para Windows 10)
 
 - **Prometheus**: http://localhost:9090
 
-- **Node Exporter**: http://172.28.166.51:9100/metrics
+- **Node Exporter** (WSL): http://172.28.166.51:9100/metrics
 
-## 📊 Dashboard Incluido
+- **Windows Metrics** (W10): http://host.docker.internal:9182/metrics
 
-El dashboard **WSL System Monitoring** incluye:
+## 📊 Dashboards Incluidos
+
+### Dashboard WSL System Monitoring
+
+Monitoreo completo de WSL/Linux con paneles:
 
 ### Paneles Principales
 - CPU Usage % (gráfico + gauge)
@@ -77,6 +91,64 @@ El dashboard **WSL System Monitoring** incluye:
 - CPU Information (detalles del procesador)
 - Top 5 Interrupts
 
+### Dashboard Windows 10 System Monitoring
+
+Monitoreo completo de Windows 10 con métricas nativas:
+
+#### Paneles de CPU
+- **CPU Usage per Core**: Uso de CPU por núcleo
+- **CPU by Mode**: Desglose por modo (Privileged, User, DPC, Interrupt)
+
+#### Paneles de Memoria
+- **Memory Usage**: Uso de memoria (Usado, Cache, Disponible)
+
+#### Paneles de Disco
+- **Disk Usage Capacity**: Capacidad usada por volumen
+- **Total Disk Space**: Gráfico de torta del espacio total
+- **Disk I/O Operations**: Lecturas y escrituras por volumen
+
+#### Paneles de Red
+- **Network Traffic**: Tráfico de red por interfaz (bytes enviados/recibidos)
+- **TCP Connection States**: Estados de conexiones TCP (Established, Time Wait)
+
+#### Paneles de Sistema
+- **Processes & Threads**: Número de procesos y threads
+- **Processor Queue Length**: Longitud de la cola del procesador
+- **System Calls Rate**: Tasa de llamadas al sistema
+
+### Métricas de Windows 10
+
+Las métricas de Windows usan el prefijo `windows_`:
+
+#### CPU
+- `windows_cpu_time_total` - Tiempo de CPU por modo y núcleo
+- Modos: `idle`, `privileged`, `user`, `dpc`, `interrupt`
+
+#### Memoria
+- `windows_cs_physical_memory_bytes` - Memoria física total
+- `windows_os_visible_memory_bytes` - Memoria disponible
+- `windows_memory_cache_bytes` - Memoria en cache
+
+#### Disco
+- `windows_logical_disk_size_bytes` - Tamaño total por volumen
+- `windows_logical_disk_free_bytes` - Espacio libre por volumen
+- `windows_logical_disk_reads_total` - Total de lecturas
+- `windows_logical_disk_writes_total` - Total de escrituras
+
+#### Red
+- `windows_net_bytes_received_total` - Bytes recibidos por interfaz
+- `windows_net_bytes_sent_total` - Bytes enviados por interfaz
+
+#### TCP
+- `windows_tcp_connections_established` - Conexiones establecidas
+- `windows_tcp_connections_time_wait` - Conexiones en Time Wait
+
+#### Sistema
+- `windows_system_processes` - Número de procesos
+- `windows_system_threads` - Número de threads
+- `windows_system_processor_queue_length` - Cola del procesador
+- `windows_system_system_calls_total` - Total de llamadas al sistema
+
 ## 📁 Estructura del Proyecto
 
 ```
@@ -85,12 +157,12 @@ profiling-pc/
 ├── prometheus.yml                        # Configuración de Prometheus
 ├── node-exporter-wsl.conf               # Config optimizada de Node Exporter
 ├── apply-node-exporter-config.sh        # Script de aplicación
-├── grafana-dashboard-wsl.json           # Dashboard (backup)
 ├── grafana/
 │   ├── provisioning/
 │   │   ├── dashboards/
 │   │   │   ├── dashboard.yml            # Provisioning de dashboards
-│   │   │   └── grafana-dashboard-wsl.json # Dashboard auto-cargado
+│   │   │   ├── grafana-dashboard-wsl.json      # Dashboard WSL
+│   │   │   └── grafana-dashboard-windows.json  # Dashboard Windows 10
 │   │   └── datasources/
 │   │       └── prometheus.yml           # Provisioning de datasources
 │   └── README.md                        # Documentación de Grafana
@@ -224,10 +296,37 @@ docker-compose up -d
 
 ## 🎯 Próximos Pasos
 
-1. ✅ Configurar alertas en Prometheus
-2. ✅ Agregar más dashboards personalizados
-3. ✅ Configurar notificaciones en Grafana
-4. ✅ Agregar métricas de aplicaciones específicas
+1. ✅ Sistema de monitoreo para WSL implementado
+2. ✅ Sistema de monitoreo para Windows 10 implementado
+3. ✅ Dashboards separados para cada sistema operativo
+4. ⬜ Configurar alertas en Prometheus
+5. ⬜ Agregar más dashboards personalizados
+6. ⬜ Configurar notificaciones en Grafana
+7. ⬜ Agregar métricas de aplicaciones específicas
+
+## 🔍 Monitoreo de Windows 10
+
+### Requisitos
+Para monitorear Windows 10, necesitas tener un exporter ejecutándose en el puerto 9182 que exponga métricas en `http://host.docker.internal:9182/metrics`.
+
+### Configuración en Prometheus
+El archivo `prometheus.yml` ya está configurado para recolectar métricas de Windows 10:
+
+```yaml
+scrape_configs:
+  - job_name: 'windows'
+    static_configs:
+      - targets: ['host.docker.internal:9182']
+```
+
+### Verificar métricas de Windows
+```bash
+# Desde WSL/Linux
+curl http://host.docker.internal:9182/metrics
+
+# Verificar targets en Prometheus
+curl http://localhost:9090/api/v1/targets
+```
 
 ## 📚 Referencias
 
