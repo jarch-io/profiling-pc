@@ -32,7 +32,7 @@
             },
             "id": 100,
             "panels": [],
-            "title": "CPU",
+            "title": "CPU Avanzado",
             "type": "row"
         },
         {
@@ -40,86 +40,7 @@
                 "type": "prometheus",
                 "uid": "prometheus"
             },
-            "fieldConfig": {
-                "defaults": {
-                    "custom": {
-                        "hideFrom": {
-                            "tooltip": false,
-                            "viz": false,
-                            "legend": false
-                        },
-                        "scaleDistribution": {
-                            "type": "linear"
-                        }
-                    },
-                    "unit": "percent"
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 8,
-                "w": 8,
-                "x": 0,
-                "y": 1
-            },
-            "id": 1,
-            "options": {
-                "calculate": false,
-                "cellGap": 2,
-                "cellValues": {
-                    "decimals": 0
-                },
-                "color": {
-                    "exponent": 0.5,
-                    "fill": "dark-orange",
-                    "mode": "scheme",
-                    "reverse": false,
-                    "scale": "exponential",
-                    "scheme": "Spectral",
-                    "steps": 128
-                },
-                "exemplars": {
-                    "color": "rgba(255,0,255,0.7)"
-                },
-                "filterValues": {
-                    "le": 1e-9
-                },
-                "legend": {
-                    "show": true
-                },
-                "rowsFrame": {
-                    "layout": "auto"
-                },
-                "tooltip": {
-                    "show": true,
-                    "yHistogram": false
-                },
-                "yAxis": {
-                    "axisPlacement": "left",
-                    "reverse": false,
-                    "unit": "short"
-                }
-            },
-            "pluginVersion": "9.0.0",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "100 - (avg by (cpu) (irate(node_cpu_seconds_total{mode=\"idle\"}[1m])) * 100)",
-                    "refId": "A",
-                    "legendFormat": "{{cpu}}"
-                }
-            ],
-            "title": "CPU Cores Usage Heatmap",
-            "type": "heatmap"
-        },
-        {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
-            },
+            "description": "Frecuencia actual de cada núcleo del CPU en MHz",
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -128,11 +49,11 @@
                     "custom": {
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
-                        "axisLabel": "",
+                        "axisLabel": "MHz",
                         "axisPlacement": "auto",
                         "barAlignment": 0,
                         "drawStyle": "line",
-                        "fillOpacity": 20,
+                        "fillOpacity": 10,
                         "gradientMode": "none",
                         "hideFrom": {
                             "tooltip": false,
@@ -156,8 +77,6 @@
                         }
                     },
                     "mappings": [],
-                    "max": 100,
-                    "min": 0,
                     "thresholds": {
                         "mode": "absolute",
                         "steps": [
@@ -167,25 +86,26 @@
                             }
                         ]
                     },
-                    "unit": "percent"
+                    "unit": "short"
                 },
                 "overrides": []
             },
             "gridPos": {
                 "h": 8,
-                "w": 8,
-                "x": 8,
+                "w": 12,
+                "x": 0,
                 "y": 1
             },
-            "id": 2,
+            "id": 1,
             "options": {
                 "legend": {
                     "calcs": [
                         "mean",
-                        "max"
+                        "max",
+                        "min"
                     ],
                     "displayMode": "table",
-                    "placement": "right",
+                    "placement": "bottom",
                     "showLegend": true
                 },
                 "tooltip": {
@@ -199,12 +119,12 @@
                         "type": "prometheus",
                         "uid": "prometheus"
                     },
-                    "expr": "100 - (avg by (cpu) (irate(node_cpu_seconds_total{mode=\"idle\"}[1m])) * 100)",
+                    "expr": "windows_cpu_core_frequency_mhz > 0",
                     "refId": "A",
-                    "legendFormat": "{{cpu}}"
+                    "legendFormat": "Core {{core}}"
                 }
             ],
-            "title": "CPU Usage per Core",
+            "title": "CPU Core Frequency",
             "type": "timeseries"
         },
         {
@@ -212,7 +132,7 @@
                 "type": "prometheus",
                 "uid": "prometheus"
             },
-            "description": "CPU usage breakdown by mode (excludes idle):\n• System: Kernel operations\n• User: User processes\n• Nice: Low priority processes\n• Iowait: Waiting for I/O\n• IRQ: Hardware interrupts\n• Softirq: Software interrupts\n• Steal: CPU stolen by hypervisor",
+            "description": "Interrupciones por segundo en cada núcleo del CPU",
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -221,12 +141,12 @@
                     "custom": {
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
-                        "axisLabel": "",
+                        "axisLabel": "Interrupts/sec",
                         "axisPlacement": "auto",
                         "barAlignment": 0,
                         "drawStyle": "line",
-                        "fillOpacity": 30,
-                        "gradientMode": "opacity",
+                        "fillOpacity": 10,
+                        "gradientMode": "none",
                         "hideFrom": {
                             "tooltip": false,
                             "viz": false,
@@ -242,7 +162,7 @@
                         "spanNulls": false,
                         "stacking": {
                             "group": "A",
-                            "mode": "normal"
+                            "mode": "none"
                         },
                         "thresholdsStyle": {
                             "mode": "off"
@@ -258,17 +178,17 @@
                             }
                         ]
                     },
-                    "unit": "percentunit"
+                    "unit": "short"
                 },
                 "overrides": []
             },
             "gridPos": {
                 "h": 8,
-                "w": 8,
-                "x": 16,
+                "w": 12,
+                "x": 12,
                 "y": 1
             },
-            "id": 10,
+            "id": 2,
             "options": {
                 "legend": {
                     "calcs": [
@@ -276,12 +196,12 @@
                         "max"
                     ],
                     "displayMode": "table",
-                    "placement": "right",
+                    "placement": "bottom",
                     "showLegend": true
                 },
                 "tooltip": {
                     "mode": "multi",
-                    "sort": "desc"
+                    "sort": "none"
                 }
             },
             "targets": [
@@ -290,66 +210,12 @@
                         "type": "prometheus",
                         "uid": "prometheus"
                     },
-                    "expr": "avg(irate(node_cpu_seconds_total{mode=\"system\"}[1m]))",
+                    "expr": "rate(windows_cpu_interrupts_total[1m]) > 0",
                     "refId": "A",
-                    "legendFormat": "System"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "avg(irate(node_cpu_seconds_total{mode=\"user\"}[1m]))",
-                    "refId": "B",
-                    "legendFormat": "User"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "avg(irate(node_cpu_seconds_total{mode=\"nice\"}[1m]))",
-                    "refId": "C",
-                    "legendFormat": "Nice"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "avg(irate(node_cpu_seconds_total{mode=\"iowait\"}[1m]))",
-                    "refId": "D",
-                    "legendFormat": "Iowait"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "avg(irate(node_cpu_seconds_total{mode=\"irq\"}[1m]))",
-                    "refId": "E",
-                    "legendFormat": "IRQ"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "avg(irate(node_cpu_seconds_total{mode=\"softirq\"}[1m]))",
-                    "refId": "F",
-                    "legendFormat": "Softirq"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "avg(irate(node_cpu_seconds_total{mode=\"steal\"}[1m]))",
-                    "refId": "G",
-                    "legendFormat": "Steal"
+                    "legendFormat": "Core {{core}}"
                 }
             ],
-            "title": "CPU by Mode (Active)",
+            "title": "CPU Interrupts Rate",
             "type": "timeseries"
         },
         {
@@ -362,7 +228,7 @@
             },
             "id": 101,
             "panels": [],
-            "title": "Memoria",
+            "title": "Sistema",
             "type": "row"
         },
         {
@@ -370,6 +236,7 @@
                 "type": "prometheus",
                 "uid": "prometheus"
             },
+            "description": "Cambios de contexto por segundo - indicador de carga del sistema",
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -378,12 +245,12 @@
                     "custom": {
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
-                        "axisLabel": "",
+                        "axisLabel": "Context Switches/sec",
                         "axisPlacement": "auto",
                         "barAlignment": 0,
                         "drawStyle": "line",
-                        "fillOpacity": 30,
-                        "gradientMode": "opacity",
+                        "fillOpacity": 20,
+                        "gradientMode": "none",
                         "hideFrom": {
                             "tooltip": false,
                             "viz": false,
@@ -399,7 +266,173 @@
                         "spanNulls": false,
                         "stacking": {
                             "group": "A",
-                            "mode": "normal"
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "yellow",
+                                "value": 10000
+                            },
+                            {
+                                "color": "red",
+                                "value": 50000
+                            }
+                        ]
+                    },
+                    "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 10
+            },
+            "id": 3,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "mean",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "prometheus"
+                    },
+                    "expr": "rate(windows_system_context_switches_total[1m])",
+                    "refId": "A",
+                    "legendFormat": "Context Switches"
+                }
+            ],
+            "title": "System Context Switches",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "Longitud de la cola del procesador - indicador de saturación",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "yellow",
+                                "value": 2
+                            },
+                            {
+                                "color": "red",
+                                "value": 5
+                            }
+                        ]
+                    },
+                    "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 6,
+                "x": 12,
+                "y": 10
+            },
+            "id": 4,
+            "options": {
+                "orientation": "auto",
+                "reduceOptions": {
+                    "values": false,
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": ""
+                },
+                "showThresholdLabels": false,
+                "showThresholdMarkers": true
+            },
+            "pluginVersion": "9.0.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "prometheus"
+                    },
+                    "expr": "windows_system_processor_queue_length",
+                    "refId": "A",
+                    "legendFormat": "Queue Length"
+                }
+            ],
+            "title": "Processor Queue Length",
+            "type": "gauge"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "Llamadas al sistema por segundo",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "System Calls/sec",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 20,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "tooltip": false,
+                            "viz": false,
+                            "legend": false
+                        },
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 2,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "never",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
                         },
                         "thresholdsStyle": {
                             "mode": "off"
@@ -415,17 +448,17 @@
                             }
                         ]
                     },
-                    "unit": "bytes"
+                    "unit": "short"
                 },
                 "overrides": []
             },
             "gridPos": {
                 "h": 8,
-                "w": 24,
-                "x": 0,
+                "w": 6,
+                "x": 18,
                 "y": 10
             },
-            "id": 3,
+            "id": 5,
             "options": {
                 "legend": {
                     "calcs": [
@@ -433,12 +466,12 @@
                         "max"
                     ],
                     "displayMode": "table",
-                    "placement": "right",
+                    "placement": "bottom",
                     "showLegend": true
                 },
                 "tooltip": {
-                    "mode": "multi",
-                    "sort": "desc"
+                    "mode": "single",
+                    "sort": "none"
                 }
             },
             "targets": [
@@ -447,39 +480,12 @@
                         "type": "prometheus",
                         "uid": "prometheus"
                     },
-                    "expr": "node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes - node_memory_Buffers_bytes - node_memory_Cached_bytes",
+                    "expr": "rate(windows_system_system_calls_total[1m])",
                     "refId": "A",
-                    "legendFormat": "Used"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "node_memory_Buffers_bytes",
-                    "refId": "B",
-                    "legendFormat": "Buffers"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "node_memory_Cached_bytes",
-                    "refId": "C",
-                    "legendFormat": "Cached"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "node_memory_MemAvailable_bytes",
-                    "refId": "D",
-                    "legendFormat": "Available"
+                    "legendFormat": "System Calls"
                 }
             ],
-            "title": "Memory Usage",
+            "title": "System Calls Rate",
             "type": "timeseries"
         },
         {
@@ -492,7 +498,7 @@
             },
             "id": 102,
             "panels": [],
-            "title": "Disco",
+            "title": "Memoria Avanzada",
             "type": "row"
         },
         {
@@ -500,6 +506,7 @@
                 "type": "prometheus",
                 "uid": "prometheus"
             },
+            "description": "Páginas leídas desde el archivo de paginación por segundo",
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -508,274 +515,7 @@
                     "custom": {
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
-                        "axisLabel": "",
-                        "axisPlacement": "auto",
-                        "barAlignment": 0,
-                        "drawStyle": "line",
-                        "fillOpacity": 20,
-                        "gradientMode": "none",
-                        "hideFrom": {
-                            "tooltip": false,
-                            "viz": false,
-                            "legend": false
-                        },
-                        "lineInterpolation": "smooth",
-                        "lineWidth": 2,
-                        "pointSize": 5,
-                        "scaleDistribution": {
-                            "type": "linear"
-                        },
-                        "showPoints": "never",
-                        "spanNulls": false,
-                        "stacking": {
-                            "group": "A",
-                            "mode": "normal"
-                        },
-                        "thresholdsStyle": {
-                            "mode": "off"
-                        }
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            }
-                        ]
-                    },
-                    "unit": "bytes"
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 8,
-                "w": 16,
-                "x": 0,
-                "y": 19
-            },
-            "id": 4,
-            "options": {
-                "legend": {
-                    "calcs": [
-                        "mean",
-                        "max"
-                    ],
-                    "displayMode": "table",
-                    "placement": "right",
-                    "showLegend": true
-                },
-                "tooltip": {
-                    "mode": "multi",
-                    "sort": "desc"
-                }
-            },
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "node_filesystem_size_bytes{fstype!=\"tmpfs\",fstype!=\"overlay\"} - node_filesystem_avail_bytes{fstype!=\"tmpfs\",fstype!=\"overlay\"}",
-                    "refId": "A",
-                    "legendFormat": "{{mountpoint}}"
-                }
-            ],
-            "title": "Disk Usage Capacity",
-            "type": "timeseries"
-        },
-        {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
-            },
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "palette-classic"
-                    },
-                    "custom": {
-                        "hideFrom": {
-                            "tooltip": false,
-                            "viz": false,
-                            "legend": false
-                        }
-                    },
-                    "mappings": [],
-                    "unit": "bytes"
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 8,
-                "w": 8,
-                "x": 16,
-                "y": 19
-            },
-            "id": 5,
-            "options": {
-                "legend": {
-                    "displayMode": "table",
-                    "placement": "right",
-                    "showLegend": true,
-                    "values": [
-                        "value"
-                    ]
-                },
-                "pieType": "donut",
-                "tooltip": {
-                    "mode": "single",
-                    "sort": "none"
-                },
-                "displayLabels": [
-                    "percent"
-                ],
-                "reduceOptions": {
-                    "values": false,
-                    "calcs": [
-                        "lastNotNull"
-                    ],
-                    "fields": ""
-                }
-            },
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "sum(node_filesystem_size_bytes{fstype!=\"tmpfs\",fstype!=\"overlay\"} - node_filesystem_avail_bytes{fstype!=\"tmpfs\",fstype!=\"overlay\"})",
-                    "refId": "A",
-                    "legendFormat": "Used"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "sum(node_filesystem_avail_bytes{fstype!=\"tmpfs\",fstype!=\"overlay\"})",
-                    "refId": "B",
-                    "legendFormat": "Free"
-                }
-            ],
-            "title": "Total Disk Space",
-            "type": "piechart"
-        },
-        {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
-            },
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "palette-classic"
-                    },
-                    "custom": {
-                        "axisCenteredZero": false,
-                        "axisColorMode": "text",
-                        "axisLabel": "",
-                        "axisPlacement": "auto",
-                        "barAlignment": 0,
-                        "drawStyle": "line",
-                        "fillOpacity": 20,
-                        "gradientMode": "none",
-                        "hideFrom": {
-                            "tooltip": false,
-                            "viz": false,
-                            "legend": false
-                        },
-                        "lineInterpolation": "smooth",
-                        "lineWidth": 2,
-                        "pointSize": 5,
-                        "scaleDistribution": {
-                            "type": "linear"
-                        },
-                        "showPoints": "never",
-                        "spanNulls": false,
-                        "stacking": {
-                            "group": "A",
-                            "mode": "none"
-                        },
-                        "thresholdsStyle": {
-                            "mode": "off"
-                        }
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            }
-                        ]
-                    },
-                    "unit": "iops"
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 7,
-                "w": 24,
-                "x": 0,
-                "y": 41
-            },
-            "id": 11,
-            "options": {
-                "legend": {
-                    "calcs": [
-                        "mean",
-                        "max"
-                    ],
-                    "displayMode": "table",
-                    "placement": "right",
-                    "showLegend": true
-                },
-                "tooltip": {
-                    "mode": "multi",
-                    "sort": "none"
-                }
-            },
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "irate(node_disk_reads_completed_total[1m]) > 0",
-                    "refId": "A",
-                    "legendFormat": "Read - {{device}}"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "irate(node_disk_writes_completed_total[1m]) > 0",
-                    "refId": "B",
-                    "legendFormat": "Write - {{device}}"
-                }
-            ],
-            "title": "Disk I/O Operations",
-            "type": "timeseries"
-        },
-        {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
-            },
-            "description": "Latencia de lectura en disco",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "palette-classic"
-                    },
-                    "custom": {
-                        "axisCenteredZero": false,
-                        "axisColorMode": "text",
-                        "axisLabel": "Latency (ms)",
+                        "axisLabel": "Pages/sec",
                         "axisPlacement": "auto",
                         "barAlignment": 0,
                         "drawStyle": "line",
@@ -812,238 +552,23 @@
                             },
                             {
                                 "color": "yellow",
-                                "value": 10
+                                "value": 100
                             },
                             {
                                 "color": "red",
-                                "value": 50
+                                "value": 1000
                             }
                         ]
                     },
-                    "unit": "ms"
+                    "unit": "short"
                 },
                 "overrides": []
-            },
-            "gridPos": {
-                "h": 7,
-                "w": 12,
-                "x": 0,
-                "y": 48
-            },
-            "id": 17,
-            "options": {
-                "legend": {
-                    "calcs": [
-                        "mean",
-                        "max"
-                    ],
-                    "displayMode": "table",
-                    "placement": "bottom",
-                    "showLegend": true
-                },
-                "tooltip": {
-                    "mode": "multi",
-                    "sort": "none"
-                }
-            },
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "(rate(node_disk_read_time_seconds_total[1m]) / rate(node_disk_reads_completed_total[1m])) * 1000 > 0",
-                    "refId": "A",
-                    "legendFormat": "{{device}}"
-                }
-            ],
-            "title": "Disk Read Latency",
-            "type": "timeseries"
-        },
-        {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
-            },
-            "description": "Latencia de escritura en disco",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "palette-classic"
-                    },
-                    "custom": {
-                        "axisCenteredZero": false,
-                        "axisColorMode": "text",
-                        "axisLabel": "Latency (ms)",
-                        "axisPlacement": "auto",
-                        "barAlignment": 0,
-                        "drawStyle": "line",
-                        "fillOpacity": 20,
-                        "gradientMode": "none",
-                        "hideFrom": {
-                            "tooltip": false,
-                            "viz": false,
-                            "legend": false
-                        },
-                        "lineInterpolation": "smooth",
-                        "lineWidth": 2,
-                        "pointSize": 5,
-                        "scaleDistribution": {
-                            "type": "linear"
-                        },
-                        "showPoints": "never",
-                        "spanNulls": false,
-                        "stacking": {
-                            "group": "A",
-                            "mode": "none"
-                        },
-                        "thresholdsStyle": {
-                            "mode": "off"
-                        }
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            },
-                            {
-                                "color": "yellow",
-                                "value": 10
-                            },
-                            {
-                                "color": "red",
-                                "value": 50
-                            }
-                        ]
-                    },
-                    "unit": "ms"
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 7,
-                "w": 12,
-                "x": 12,
-                "y": 48
-            },
-            "id": 18,
-            "options": {
-                "legend": {
-                    "calcs": [
-                        "mean",
-                        "max"
-                    ],
-                    "displayMode": "table",
-                    "placement": "bottom",
-                    "showLegend": true
-                },
-                "tooltip": {
-                    "mode": "multi",
-                    "sort": "none"
-                }
-            },
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "(rate(node_disk_write_time_seconds_total[1m]) / rate(node_disk_writes_completed_total[1m])) * 1000 > 0",
-                    "refId": "A",
-                    "legendFormat": "{{device}}"
-                }
-            ],
-            "title": "Disk Write Latency",
-            "type": "timeseries"
-        },
-        {
-            "collapsed": false,
-            "gridPos": {
-                "h": 1,
-                "w": 24,
-                "x": 0,
-                "y": 55
-            },
-            "id": 103,
-            "panels": [],
-            "title": "Red",
-            "type": "row"
-        },
-        {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
-            },
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "palette-classic"
-                    },
-                    "custom": {
-                        "axisCenteredZero": false,
-                        "axisColorMode": "text",
-                        "axisLabel": "",
-                        "axisPlacement": "auto",
-                        "barAlignment": 0,
-                        "drawStyle": "line",
-                        "fillOpacity": 20,
-                        "gradientMode": "none",
-                        "hideFrom": {
-                            "tooltip": false,
-                            "viz": false,
-                            "legend": false
-                        },
-                        "lineInterpolation": "smooth",
-                        "lineWidth": 2,
-                        "pointSize": 5,
-                        "scaleDistribution": {
-                            "type": "linear"
-                        },
-                        "showPoints": "never",
-                        "spanNulls": false,
-                        "stacking": {
-                            "group": "A",
-                            "mode": "none"
-                        },
-                        "thresholdsStyle": {
-                            "mode": "off"
-                        }
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            }
-                        ]
-                    },
-                    "unit": "binBps"
-                },
-                "overrides": [
-                    {
-                        "matcher": {
-                            "id": "byRegexp",
-                            "options": ".*Transmit.*"
-                        },
-                        "properties": [
-                            {
-                                "id": "custom.transform",
-                                "value": "negative-Y"
-                            }
-                        ]
-                    }
-                ]
             },
             "gridPos": {
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 49
+                "y": 19
             },
             "id": 6,
             "options": {
@@ -1067,21 +592,21 @@
                         "type": "prometheus",
                         "uid": "prometheus"
                     },
-                    "expr": "irate(node_network_receive_bytes_total{device!=\"lo\"}[1m]) > 0",
+                    "expr": "rate(windows_memory_swap_pages_read_total[1m])",
                     "refId": "A",
-                    "legendFormat": "Receive - {{device}}"
+                    "legendFormat": "Pages Read"
                 },
                 {
                     "datasource": {
                         "type": "prometheus",
                         "uid": "prometheus"
                     },
-                    "expr": "irate(node_network_transmit_bytes_total{device!=\"lo\"}[1m]) > 0",
+                    "expr": "rate(windows_memory_swap_pages_written_total[1m])",
                     "refId": "B",
-                    "legendFormat": "Transmit - {{device}}"
+                    "legendFormat": "Pages Written"
                 }
             ],
-            "title": "Network Traffic",
+            "title": "Memory Swap Activity",
             "type": "timeseries"
         },
         {
@@ -1089,6 +614,7 @@
                 "type": "prometheus",
                 "uid": "prometheus"
             },
+            "description": "Memoria del pool no paginado del sistema",
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -1131,93 +657,6 @@
                             {
                                 "color": "green",
                                 "value": null
-                            }
-                        ]
-                    },
-                    "unit": "short"
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 8,
-                "w": 12,
-                "x": 12,
-                "y": 49
-            },
-            "id": 8,
-            "options": {
-                "legend": {
-                    "calcs": [
-                        "mean",
-                        "max"
-                    ],
-                    "displayMode": "table",
-                    "placement": "bottom",
-                    "showLegend": true
-                },
-                "tooltip": {
-                    "mode": "multi",
-                    "sort": "none"
-                }
-            },
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "node_netstat_Tcp_CurrEstab",
-                    "refId": "A",
-                    "legendFormat": "Established"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "node_sockstat_TCP_tw",
-                    "refId": "B",
-                    "legendFormat": "Time Wait"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "node_sockstat_TCP_alloc - node_netstat_Tcp_CurrEstab - node_sockstat_TCP_tw",
-                    "refId": "C",
-                    "legendFormat": "Other States"
-                }
-            ],
-            "title": "TCP Connection States",
-            "type": "timeseries"
-        },
-        {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
-            },
-            "description": "Total accumulated network data sent and received per network interface",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "thresholds"
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            },
-                            {
-                                "color": "yellow",
-                                "value": 1073741824
-                            },
-                            {
-                                "color": "red",
-                                "value": 10737418240
                             }
                         ]
                     },
@@ -1227,120 +666,9 @@
             },
             "gridPos": {
                 "h": 8,
-                "w": 24,
-                "x": 0,
-                "y": 57
-            },
-            "id": 14,
-            "options": {
-                "orientation": "auto",
-                "reduceOptions": {
-                    "values": false,
-                    "calcs": [
-                        "lastNotNull"
-                    ],
-                    "fields": ""
-                },
-                "showThresholdLabels": false,
-                "showThresholdMarkers": true
-            },
-            "pluginVersion": "9.0.0",
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "node_network_receive_bytes_total > 0",
-                    "refId": "A",
-                    "legendFormat": "Received - {{device}}"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "node_network_transmit_bytes_total > 0",
-                    "refId": "B",
-                    "legendFormat": "Sent - {{device}}"
-                }
-            ],
-            "title": "Network Data Total (Accumulated)",
-            "type": "gauge"
-        },
-        {
-            "collapsed": false,
-            "gridPos": {
-                "h": 1,
-                "w": 24,
-                "x": 0,
-                "y": 65
-            },
-            "id": 104,
-            "panels": [],
-            "title": "Sistema",
-            "type": "row"
-        },
-        {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "prometheus"
-            },
-            "description": "Process states:\n• R (Running): Actively using CPU\n• S (Sleeping): Waiting for events\n• D (Uninterruptible Sleep): Waiting for I/O\n• Z (Zombie): Terminated, waiting for parent\n• T (Stopped): Paused by signal",
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "palette-classic"
-                    },
-                    "custom": {
-                        "axisCenteredZero": false,
-                        "axisColorMode": "text",
-                        "axisLabel": "",
-                        "axisPlacement": "auto",
-                        "barAlignment": 0,
-                        "drawStyle": "line",
-                        "fillOpacity": 20,
-                        "gradientMode": "none",
-                        "hideFrom": {
-                            "tooltip": false,
-                            "viz": false,
-                            "legend": false
-                        },
-                        "lineInterpolation": "smooth",
-                        "lineWidth": 2,
-                        "pointSize": 5,
-                        "scaleDistribution": {
-                            "type": "linear"
-                        },
-                        "showPoints": "never",
-                        "spanNulls": false,
-                        "stacking": {
-                            "group": "A",
-                            "mode": "none"
-                        },
-                        "thresholdsStyle": {
-                            "mode": "off"
-                        }
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            }
-                        ]
-                    },
-                    "unit": "short"
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 7,
                 "w": 12,
-                "x": 0,
-                "y": 66
+                "x": 12,
+                "y": 19
             },
             "id": 7,
             "options": {
@@ -1354,7 +682,7 @@
                     "showLegend": true
                 },
                 "tooltip": {
-                    "mode": "multi",
+                    "mode": "single",
                     "sort": "none"
                 }
             },
@@ -1364,57 +692,12 @@
                         "type": "prometheus",
                         "uid": "prometheus"
                     },
-                    "expr": "node_processes_state{state=\"R\"}",
+                    "expr": "windows_memory_pool_nonpaged_bytes",
                     "refId": "A",
-                    "legendFormat": "Running"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "node_procs_blocked",
-                    "refId": "B",
-                    "legendFormat": "Blocked"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "node_processes_state{state=\"S\"}",
-                    "refId": "C",
-                    "legendFormat": "Sleeping"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "node_processes_state{state=\"Z\"}",
-                    "refId": "D",
-                    "legendFormat": "Zombie"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "node_processes_state{state=\"D\"}",
-                    "refId": "E",
-                    "legendFormat": "Uninterruptible Sleep (I/O)"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "node_processes_state{state=\"T\"}",
-                    "refId": "F",
-                    "legendFormat": "Stopped"
+                    "legendFormat": "Nonpaged Pool"
                 }
             ],
-            "title": "Process States",
+            "title": "Memory Pool Nonpaged",
             "type": "timeseries"
         },
         {
@@ -1422,6 +705,7 @@
                 "type": "prometheus",
                 "uid": "prometheus"
             },
+            "description": "Fallos de caché del sistema por segundo",
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -1430,7 +714,111 @@
                     "custom": {
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
-                        "axisLabel": "",
+                        "axisLabel": "Faults/sec",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 20,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "tooltip": false,
+                            "viz": false,
+                            "legend": false
+                        },
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 2,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "never",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    },
+                    "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 27
+            },
+            "id": 8,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "mean",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "prometheus"
+                    },
+                    "expr": "rate(windows_memory_cache_faults_total[1m])",
+                    "refId": "A",
+                    "legendFormat": "Cache Faults"
+                }
+            ],
+            "title": "Memory Cache Faults Rate",
+            "type": "timeseries"
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 35
+            },
+            "id": 103,
+            "panels": [],
+            "title": "Disco - Latencias",
+            "type": "row"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "Latencia de lectura en disco físico",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "Latency (ms)",
                         "axisPlacement": "auto",
                         "barAlignment": 0,
                         "drawStyle": "line",
@@ -1467,23 +855,23 @@
                             },
                             {
                                 "color": "yellow",
-                                "value": 1
+                                "value": 10
                             },
                             {
                                 "color": "red",
-                                "value": 2
+                                "value": 50
                             }
                         ]
                     },
-                    "unit": "short"
+                    "unit": "ms"
                 },
                 "overrides": []
             },
             "gridPos": {
-                "h": 7,
+                "h": 8,
                 "w": 12,
-                "x": 12,
-                "y": 66
+                "x": 0,
+                "y": 36
             },
             "id": 9,
             "options": {
@@ -1507,30 +895,12 @@
                         "type": "prometheus",
                         "uid": "prometheus"
                     },
-                    "expr": "node_load1",
+                    "expr": "(rate(windows_physical_disk_read_latency_seconds_total[1m]) / rate(windows_physical_disk_reads_total[1m])) * 1000 > 0",
                     "refId": "A",
-                    "legendFormat": "1m"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "node_load5",
-                    "refId": "B",
-                    "legendFormat": "5m"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "prometheus"
-                    },
-                    "expr": "node_load15",
-                    "refId": "C",
-                    "legendFormat": "15m"
+                    "legendFormat": "Disk {{disk}} - Read"
                 }
             ],
-            "title": "System Load Average",
+            "title": "Physical Disk Read Latency",
             "type": "timeseries"
         },
         {
@@ -1538,6 +908,7 @@
                 "type": "prometheus",
                 "uid": "prometheus"
             },
+            "description": "Latencia de escritura en disco físico",
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -1546,7 +917,7 @@
                     "custom": {
                         "axisCenteredZero": false,
                         "axisColorMode": "text",
-                        "axisLabel": "",
+                        "axisLabel": "Latency (ms)",
                         "axisPlacement": "auto",
                         "barAlignment": 0,
                         "drawStyle": "line",
@@ -1580,6 +951,311 @@
                             {
                                 "color": "green",
                                 "value": null
+                            },
+                            {
+                                "color": "yellow",
+                                "value": 10
+                            },
+                            {
+                                "color": "red",
+                                "value": 50
+                            }
+                        ]
+                    },
+                    "unit": "ms"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 36
+            },
+            "id": 10,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "mean",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "none"
+                }
+            },
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "prometheus"
+                    },
+                    "expr": "(rate(windows_physical_disk_write_latency_seconds_total[1m]) / rate(windows_physical_disk_writes_total[1m])) * 1000 > 0",
+                    "refId": "A",
+                    "legendFormat": "Disk {{disk}} - Write"
+                }
+            ],
+            "title": "Physical Disk Write Latency",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "Latencia de lectura en volúmenes lógicos",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "Latency (ms)",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 20,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "tooltip": false,
+                            "viz": false,
+                            "legend": false
+                        },
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 2,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "never",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "yellow",
+                                "value": 10
+                            },
+                            {
+                                "color": "red",
+                                "value": 50
+                            }
+                        ]
+                    },
+                    "unit": "ms"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 44
+            },
+            "id": 11,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "mean",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "none"
+                }
+            },
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "prometheus"
+                    },
+                    "expr": "(rate(windows_logical_disk_read_latency_seconds_total[1m]) / rate(windows_logical_disk_reads_total[1m])) * 1000 > 0",
+                    "refId": "A",
+                    "legendFormat": "{{volume}} - Read"
+                }
+            ],
+            "title": "Logical Disk Read Latency",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "Latencia de escritura en volúmenes lógicos",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "Latency (ms)",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 20,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "tooltip": false,
+                            "viz": false,
+                            "legend": false
+                        },
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 2,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "never",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "yellow",
+                                "value": 10
+                            },
+                            {
+                                "color": "red",
+                                "value": 50
+                            }
+                        ]
+                    },
+                    "unit": "ms"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 44
+            },
+            "id": 12,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "mean",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "none"
+                }
+            },
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "prometheus"
+                    },
+                    "expr": "(rate(windows_logical_disk_write_latency_seconds_total[1m]) / rate(windows_logical_disk_writes_total[1m])) * 1000 > 0",
+                    "refId": "A",
+                    "legendFormat": "{{volume}} - Write"
+                }
+            ],
+            "title": "Logical Disk Write Latency",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "Solicitudes de I/O en cola por disco físico",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "Queue Length",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 20,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "tooltip": false,
+                            "viz": false,
+                            "legend": false
+                        },
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 2,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "never",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "yellow",
+                                "value": 2
+                            },
+                            {
+                                "color": "red",
+                                "value": 10
                             }
                         ]
                     },
@@ -1588,10 +1264,10 @@
                 "overrides": []
             },
             "gridPos": {
-                "h": 7,
-                "w": 24,
+                "h": 8,
+                "w": 12,
                 "x": 0,
-                "y": 73
+                "y": 52
             },
             "id": 13,
             "options": {
@@ -1601,12 +1277,12 @@
                         "max"
                     ],
                     "displayMode": "table",
-                    "placement": "right",
+                    "placement": "bottom",
                     "showLegend": true
                 },
                 "tooltip": {
                     "mode": "multi",
-                    "sort": "desc"
+                    "sort": "none"
                 }
             },
             "targets": [
@@ -1615,12 +1291,340 @@
                         "type": "prometheus",
                         "uid": "prometheus"
                     },
-                    "expr": "topk(5, irate(node_interrupts_total[1m]))",
+                    "expr": "windows_physical_disk_requests_queued > 0",
                     "refId": "A",
-                    "legendFormat": "{{type}} - {{devices}}"
+                    "legendFormat": "Disk {{disk}}"
                 }
             ],
-            "title": "Top 5 Interrupts",
+            "title": "Physical Disk Queue Length",
+            "type": "timeseries"
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 60
+            },
+            "id": 104,
+            "panels": [],
+            "title": "Red - Errores y Descartes",
+            "type": "row"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "Paquetes descartados y con errores en recepción",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "Packets/sec",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 20,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "tooltip": false,
+                            "viz": false,
+                            "legend": false
+                        },
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 2,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "never",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "yellow",
+                                "value": 10
+                            },
+                            {
+                                "color": "red",
+                                "value": 100
+                            }
+                        ]
+                    },
+                    "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 61
+            },
+            "id": 14,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "mean",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "none"
+                }
+            },
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "prometheus"
+                    },
+                    "expr": "rate(windows_net_packets_received_discarded_total[1m]) > 0",
+                    "refId": "A",
+                    "legendFormat": "{{nic}} - Discarded"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "prometheus"
+                    },
+                    "expr": "rate(windows_net_packets_received_errors_total[1m]) > 0",
+                    "refId": "B",
+                    "legendFormat": "{{nic}} - Errors"
+                }
+            ],
+            "title": "Network Receive Errors & Discards",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "Paquetes descartados y con errores en transmisión",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "Packets/sec",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 20,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "tooltip": false,
+                            "viz": false,
+                            "legend": false
+                        },
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 2,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "never",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "yellow",
+                                "value": 10
+                            },
+                            {
+                                "color": "red",
+                                "value": 100
+                            }
+                        ]
+                    },
+                    "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 61
+            },
+            "id": 15,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "mean",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "none"
+                }
+            },
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "prometheus"
+                    },
+                    "expr": "rate(windows_net_packets_outbound_discarded_total[1m]) > 0",
+                    "refId": "A",
+                    "legendFormat": "{{nic}} - Discarded"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "prometheus"
+                    },
+                    "expr": "rate(windows_net_packets_outbound_errors_total[1m]) > 0",
+                    "refId": "B",
+                    "legendFormat": "{{nic}} - Errors"
+                }
+            ],
+            "title": "Network Transmit Errors & Discards",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "Longitud de cola de salida de red",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "Queue Length",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 20,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "tooltip": false,
+                            "viz": false,
+                            "legend": false
+                        },
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 2,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "never",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "yellow",
+                                "value": 2
+                            },
+                            {
+                                "color": "red",
+                                "value": 10
+                            }
+                        ]
+                    },
+                    "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 69
+            },
+            "id": 16,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "mean",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "none"
+                }
+            },
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "prometheus"
+                    },
+                    "expr": "windows_net_output_queue_length_packets > 0",
+                    "refId": "A",
+                    "legendFormat": "{{nic}}"
+                }
+            ],
+            "title": "Network Output Queue Length",
             "type": "timeseries"
         }
     ],
@@ -1628,8 +1632,9 @@
     "schemaVersion": 38,
     "style": "dark",
     "tags": [
-        "wsl",
-        "system-monitoring"
+        "windows",
+        "advanced",
+        "metrics"
     ],
     "templating": {
         "list": []
@@ -1640,8 +1645,8 @@
     },
     "timepicker": {},
     "timezone": "",
-    "title": "WSL System Monitoring Dashboard",
-    "uid": "wsl-monitoring",
+    "title": "Windows 10 - Advanced Metrics",
+    "uid": "windows-advanced",
     "version": 0,
     "weekStart": ""
 }
